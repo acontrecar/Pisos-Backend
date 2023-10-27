@@ -100,11 +100,20 @@ export const UserController = {
     if (!matchPassword)
       return res.status(400).send({ message: "Invalid password" });
 
-    res.status(200).send({ message: "User logged in", userFound });
+    const token = await createAccessToken({ id: userFound._id });
+    res.cookie("token", token, { httpOnly: true });
+
+    res
+      .status(200)
+      .send({ message: "User logged in", userFound, token: token });
   },
 
   logout: async (req: Request, res: Response) => {
     res.cookie("token", "", { httpOnly: true, expires: new Date(0) });
     res.status(200).send({ message: "User logged out" });
+  },
+
+  test: async (req: Request, res: Response) => {
+    res.status(200).send({ message: "Has accedido correctamente" });
   },
 };

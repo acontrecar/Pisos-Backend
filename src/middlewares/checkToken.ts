@@ -1,28 +1,29 @@
-// import { NextFunction, Request, Response } from "express";
-// import jwt from "jsonwebtoken";
+import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
-// const authenticate = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   const { token } = req.cookies;
+const authenticate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { token } = req.cookies;
 
-//   if (!token) {
-//     res.status(401).send({ message: "No token provided" });
-//     return;
-//   }
+  if (!token) {
+    res.status(401).send({ message: "No token provided" });
+    return;
+  }
 
-//   jwt.verify(token, process.env.JWT_SECRET_KEY!, (err, user) => {
-//     if (err) {
-//       res.status(401).send({ message: "Unauthorized" });
-//       return;
-//     }
+  const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY!);
 
-//     req.user = user;
-//   });
+  if (!decoded) {
+    res.status(401).send({ message: "Unauthorized" });
+    return;
+  }
 
-//   next();
-// };
+  const { id } = decoded as any;
 
-// export default authenticate;
+  req.body.user = id;
+  next();
+};
+
+export default authenticate;
