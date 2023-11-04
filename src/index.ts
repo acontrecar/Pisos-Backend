@@ -2,15 +2,18 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import { connect } from "./db/db";
 import userRoutes from "./routes/user.routers";
+import cors from "cors";
 
 import dotenv from "dotenv";
 dotenv.config();
 
 connect();
 const app = express();
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
 const PORT = 3001;
 

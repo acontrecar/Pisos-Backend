@@ -26,7 +26,11 @@ export const UserController = {
       validate_username = !validator.isEmpty(params.username);
       validate_email =
         !validator.isEmpty(params.email) && validator.isEmail(params.email);
-      validate_password = !validator.isEmpty(params.password);
+      validate_password =
+        !validator.isEmpty(params.password) &&
+        params.password.length >= 6 &&
+        params.password.length <= 12 &&
+        validator.isAlphanumeric(params.password);
     } catch (ex) {
       return res.status(400).send({ message: "Error registering user" });
     }
