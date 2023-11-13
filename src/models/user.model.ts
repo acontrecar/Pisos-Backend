@@ -14,7 +14,7 @@ const schemaUser = new mongoose.Schema({
   email: { type: String, required: true, unique: true, trim: true },
   password: { type: String, required: true },
   name: { type: String },
-  image: { type: String },
+  image: { public_id: String, secure_url: String },
   role: { type: String, required: true },
 });
 
